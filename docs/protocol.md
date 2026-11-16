@@ -23,6 +23,9 @@ seq差分が0または2^31以上の通知は拒否し、重複でTTLを延長し
 LOST=6はローカル表示だけで、wire上では受け付けない。
 
 同じgeneration/sequenceを複数送信者が共有しないように、bridge側で単一writerを管理する。
+最初の認証済みhelloのIP/portへ固定し、別peerへは旧helloから5秒超かつ
+strictに大きいgenerationの場合だけ切り替える。同じpeerの同じgenerationではseqを戻さない。
+これは暗号学的なchallenge-responseではなく、共有鍵を持つ送信者同士の排他も保証しない。
 本体からPCのコマンド実行・承認・PR操作を要求するメッセージは定義しない。
 
 SipHashの照合値は[著者の参照vector](https://github.com/veorq/SipHash/blob/master/vectors.h)を使用。

@@ -13,3 +13,27 @@ uv run --locked python -m unittest discover -s tests -v
 
 これはホストのC mock/実プロセス試験で、本体LCD・Wi-Fi・聴取・Flash適用の結果ではない。
 本体の実装済み11appへ今回のコードを配備した記録はない。GPU費用は発生させていない。
+
+## 2026-11-17: UDP・ペアリング・CLI・配備ガード
+
+| 変更 | 意図したRed | Green |
+|---|---|---|
+| UDP bridge | bridge module欠落 | 実loopback UDPの認証/世代/peer固定3件 |
+| 再接続 | 失効後の新peerが固定旧peerのまま | 新世代かつ5秒失効後だけ切替 |
+| pair/build | build module欠落（初回） | 固定SDK、鍵別/決定的build、16KiB上限 |
+| macOS一時フォルダ | /var→/private/varで3件ValueError | 親を正規化し、鍵本体symlinkを拒否。3件成功 |
+| CLI | cli module欠落 | 実exit 7が認証付きFAILとしてUDP受信、鍵非表示、不正値で未起動 |
+| 専用app配備 | deploy module欠落 | 他app不変、前hash一致、HOME/キー解放、異常時停止3件 |
+
+全unit 22件Green（1.031秒）。統合4件Green（1.024秒）。
+統合の追加WASM試験は既存C実装に対する検証で、実装前TDDとは数えない。
+最初のWASM試験はhelloを20msで期待して失敗したが、仕様は1秒周期のため
+試験時刻を1000msへ修正。実装を試験へ合わせて変更していない。
+
+```sh
+uv run --locked python -m unittest discover -s tests -v
+uv run --locked python -m unittest discover -s tests/integration -v
+```
+
+CIはLinux unitとmacOSの固定SDK/WASM buildへ分離。
+本体配備ガードはmock clientで確認した段階で、実機へ書いた証拠ではない。

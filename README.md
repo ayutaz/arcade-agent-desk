@@ -8,9 +8,28 @@ The computer sends status numbers, never command text, source code or full logs.
 
 ## Current status
 
-The authenticated protocol, command runner and C device app pass host tests.
-The UDP bridge, pairing/build command, real-device trial and installation guide
-are still being implemented. **This is not a device-tested release yet.**
+The UDP bridge, local command runner, private pairing and paired WASM build work
+on the host. Tests cover the real C app and Wasmtime, including authentication,
+replay rejection and expiry. **This is not a device-tested release yet.**
+
+## Try the host tools
+
+```sh
+uv sync --locked
+uv run --locked python -m arcade_agent_desk pair --key secrets/pairing.json
+uv run --locked python -m arcade_agent_desk build \
+  --sdk ../scratch-arcade-os --key secrets/pairing.json --output build/paired
+uv run --locked python -m arcade_agent_desk run --key secrets/pairing.json \
+  --timeout 60 -- uv run --locked python -m unittest discover -s tests
+```
+
+Builds require a clean OS checkout at
+`547e7ac7e1af8eedf1dc063f97a27a93425f50b7` and its pinned Zig toolchain
+(`uv run --locked python tools/bootstrap.py` in that checkout).
+Build output embeds your private pairing key: keep both the output and the key local.
+The default bridge listens only on loopback. A real device needs an explicit LAN
+bind address and the OS's configured UDP route; running a command alone does not
+install or connect the device.
 
 ## Run the tests
 
@@ -19,6 +38,8 @@ Install [uv](https://docs.astral.sh/uv/) and Clang, then:
 ```sh
 uv sync --locked
 uv run --locked python -m unittest discover -s tests -v
+# With the pinned OS checkout and toolchain available:
+uv run --locked python -m unittest discover -s tests/integration -v
 ```
 
 Python is pinned to 3.12.13. Host tests need no GPU, credentials or connected device.
@@ -31,6 +52,10 @@ They compile the real C app with a mock OS and test real short-lived subprocesse
 - Sequence numbers reject replay and reordering; expired messages show LOST.
 - Up to four numbered tasks can be selected with the direction buttons.
 - The host runner reports the actual exit status and bounds command execution.
+
+WAIT is an explicit library event; the command runner does not guess when an AI
+tool is waiting for approval. Use one bridge per device. A restarted device app
+may rebind a changed UDP address after the old peer expires (five seconds).
 
 The app targets the [Scratch Arcade OS](https://github.com/ayutaz/scratch-arcade-os)
 ABI 2 SDK. Production pairing keys stay local and must not be committed.
