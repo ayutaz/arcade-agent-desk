@@ -67,3 +67,9 @@ keyのFIFOも別の先行subprocess deadlineでRed→O_NONBLOCK/regular検査で
 実機4job/4タブ/期限/終了解放は[日常運用](daily-workflow.md)へ。ホスト結果を人の聴取やLCD確認へ拡大しない。
 
 追加後の回帰: `uv run --locked python -m unittest discover -s tests -q`は43件/1.424秒、実SDK統合は6件/1.188秒で成功。
+
+## 公開cloneからの導入確認
+
+PR #2の7da6a5fをGitHubから新規cloneし、空のuv環境で`uv sync --locked`、pair、buildを実行。新しい非公開鍵のpackageは3,559B。鍵でcodeの最適化結果が変わるため、全pairingが3,555Bとは扱わない。
+本体と同じ既存鍵で別途再buildした場合は3,555B/SHA43a14940…と完全一致した。
+新cloneでexamples/jobs.jsonのwatchを実行し、exit0/0/7/124、全体exit1、実機未接続を照合。これはローカル実プロセス試験で、本体への二重配備はしていない。
