@@ -66,3 +66,12 @@ FW・共有設定・他appを書き換えない。Wi-Fiエラーや所有不明�
 
 [実WASMのGIF](media/replay.gif)と6状態のPNGは、公開demo専用鍵と合成通知で作成した。
 本体撮影・実ジョブの録画ではない。`uv run --locked python -m arcade_agent_desk.media --sdk <SDK> --output <new-directory>`で再生成できる。production鍵やpaired binaryは公開しない。
+
+## 再接続と連続更新
+
+同じ15app/FWで接続→実更新→終了を2周し、稼働中のUSB再openも2回成功した。
+合計317.654秒、3秒間隔の40更新を本体の描画命令CRCで照合し、3秒の照合期限超過は0。
+PCのupdate呼出しから最初の一致まで中央値262.716ms、最大462.976ms。
+物理LCDの遅延・UDP全packetの欠落率を測った値ではない。長期の無故障保証でもない。
+終了ごとにHOME/radio停止/15app版hashを確認し、再起動したappの世代増加を確認した。
+[匿名結果](device/soak-v1.json)。新FW・本体の電源再投入は実施していない。
