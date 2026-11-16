@@ -8,9 +8,28 @@ WORK・DONE・FAIL・WAIT・LOSTの表示と短い通知音を使います。
 
 ## 現在の状態
 
-認証付きprotocol、コマンドrunner、本体用Cアプリのホスト試験が成功しています。
-UDP bridge、ペアリング/buildコマンド、実機試験、導入手順は実装中です。
-**実機確認済みのリリースではありません。**
+UDP bridge、実コマンドrunner、非公開鍵の生成、鍵ごとのWASMビルドまで実装しました。
+実CアプリとWasmtimeで、認証・再送拒否・期限切れを試験しています。
+ESP32-S3実機1台でも、状態/描画照合・実終了コードの通知・期限切れ・解放を自動検証しました。
+実画面/聴取の確認と、一括導入コマンドは残っています。
+
+## ホストで試す
+
+```sh
+uv sync --locked
+uv run --locked python -m arcade_agent_desk pair --key secrets/pairing.json
+uv run --locked python -m arcade_agent_desk build \
+  --sdk ../scratch-arcade-os --key secrets/pairing.json --output build/paired
+uv run --locked python -m arcade_agent_desk run --key secrets/pairing.json \
+  --timeout 60 -- uv run --locked python -m unittest discover -s tests
+```
+
+buildには変更のないOS checkout
+`547e7ac7e1af8eedf1dc063f97a27a93425f50b7`と固定Zigが必要です。
+OS側で`uv run --locked python tools/bootstrap.py`を実行して用意します。
+成果物にも秘密鍵が含まれるため、鍵・build出力はローカルに保管します。
+標準の待受はloopback。本体接続にはLANアドレスの明示指定とOSのUDP経路設定が必要です。
+runだけではアプリの配備や本体接続は行いません。
 
 ## テスト
 
@@ -19,6 +38,8 @@ UDP bridge、ペアリング/buildコマンド、実機試験、導入手順は�
 ```sh
 uv sync --locked
 uv run --locked python -m unittest discover -s tests -v
+# 固定OS checkoutとtoolchainを用意した場合:
+uv run --locked python -m unittest discover -s tests/integration -v
 ```
 
 Pythonは3.12.13へ固定。GPU・資格情報・実機は不要です。
@@ -33,8 +54,11 @@ Pythonは3.12.13へ固定。GPU・資格情報・実機は不要です。
 - runnerが実際の終了コードを通知し、実行時間を制限。
 
 [Scratch Arcade OS](https://github.com/ayutaz/scratch-arcade-os) ABI 2向けです。
+WAITはlibraryから明示的に送るイベントで、AIの確認待ちを推測しません。
+本体1台につきbridgeは1つ。送信先が変わる再接続では、旧peerの5秒失効後に
+本体アプリを再起動し、新しいgenerationを使います。
 製品用のペアリング鍵はローカルだけで保持し、公開しません。
 公開テスト鍵は試験専用で、実機配備には使いません。
 
-[ホスト検証](docs/validation.md)・[通信仕様](docs/protocol.md)に詳細を記録します。
+[ホスト検証](docs/validation.md)・[実機検証](docs/device-validation.md)・[通信仕様](docs/protocol.md)に詳細を記録します。
 コードのライセンスは[Apache-2.0](LICENSE)です。
