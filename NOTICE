@@ -1,0 +1,7 @@
+Arcade Agent Desk
+Copyright 2026 Arcade Agent Desk contributors
+
+vendor/lab_os.h is from ayutaz/scratch-arcade-os, Apache-2.0.
+The Apache-2.0 license is provided in LICENSE.
+SipHash-2-4 reference test vectors are attributed to Jean-Philippe Aumasson
+and Daniel J. Bernstein: https://github.com/veorq/SipHash

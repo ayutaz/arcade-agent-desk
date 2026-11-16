@@ -1,0 +1,12 @@
+.venv/
+.cache/
+__pycache__/
+*.py[cod]
+.env
+.env.*
+!.env.example
+secrets/
+build/
+reports/
+app/desk_key.h
+.DS_Store
