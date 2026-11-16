@@ -16,7 +16,9 @@ The UDP bridge, local command runner, private pairing and paired WASM build work
 on the host. Tests cover the real C app and Wasmtime, including authentication,
 replay rejection and expiry. One ESP32-S3 handheld has also passed automated
 status/render comparisons, real exit-code notifications, expiry and cleanup.
-Human display/audio checks and a complete installation command are still pending.
+The install/connect/disconnect CLI is available. Two reconnect cycles preserved all
+15 apps; 40 timed updates met the three-second observation deadline. Human
+LCD, physical key and audio checks remain pending.
 
 ## Try the host tools
 
@@ -48,6 +50,13 @@ One bridge handles up to four explicit commands. The sample includes intentional
 failure and timeout cases, so its exit status is 1. Copy it to a local, ignored
 job file for real work. [Job format and boundaries](docs/daily-workflow.md).
 No command or output text is sent to the handheld.
+
+## Connect the handheld
+
+Start from HOME with released keys. Use the same paired package and key as above.
+The [connection guide](docs/daily-workflow.md#本体の接続と終了) covers private Wi-Fi
+settings, detected USB port, explicit LAN bind, guarded installation and radio cleanup.
+These commands add only the owned app; they do not install device firmware.
 
 ## Run the tests
 
