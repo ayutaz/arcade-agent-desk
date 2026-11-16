@@ -10,6 +10,8 @@ The computer sends status numbers, never command text, source code or full logs.
 
 *Actual WASM replay with synthetic notices; not a handheld recording or real job video.*
 
+[22-second demo](docs/media/demo.mp4) — edited host replay with a synthetic soundtrack; Japanese captions. Not handheld footage.
+
 ## Current status
 
 The UDP bridge, local command runner, private pairing and paired WASM build work
