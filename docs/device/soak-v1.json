@@ -1,0 +1,20 @@
+{
+  "cycles": 2,
+  "observed_updates": 40,
+  "missed_deadlines": 0,
+  "update_deadline_ms": 3000,
+  "latency_ms": {
+    "min": 130.449,
+    "median": 262.716,
+    "max": 462.976
+  },
+  "scope": "PC update to first matching device draw-command CRC, not LCD latency or UDP packet-loss rate",
+  "serial_reopens_while_active": 2,
+  "app_generation_increased": true,
+  "home": true,
+  "radio_stopped": true,
+  "preserved_apps": 15,
+  "firmware_updated": false,
+  "human_verified": false,
+  "elapsed_seconds": 317.654
+}

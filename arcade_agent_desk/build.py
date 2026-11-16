@@ -11,7 +11,7 @@ import sys
 import tempfile
 
 ROOT=Path(__file__).resolve().parents[1]
-SDK_COMMIT='547e7ac7e1af8eedf1dc063f97a27a93425f50b7'
+SDK_COMMIT='3bb9548846505eac303927b9064c6a8d0eb44f79'
 OWNER='arcade-agent-desk-build-v1'
 
 
@@ -32,7 +32,7 @@ def create_key(path):
 def load_key(path):
     try:
         path=private_path(path)
-        fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW)
+        fd=os.open(path,os.O_RDONLY|os.O_NOFOLLOW|os.O_NONBLOCK)
         with os.fdopen(fd,'rb') as stream:
             info=os.fstat(stream.fileno())
             if not stat.S_ISREG(info.st_mode) or info.st_size>256 or info.st_mode&0o077:

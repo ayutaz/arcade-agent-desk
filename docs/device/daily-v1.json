@@ -1,0 +1,17 @@
+{
+  "task_exit_codes": {
+    "1": 0,
+    "2": 7,
+    "3": 124,
+    "4": 0
+  },
+  "device_generation": 9,
+  "four_tabs_crc_matched": true,
+  "expired_crc_matched": true,
+  "home": true,
+  "radio_stopped": true,
+  "preserved_apps": 15,
+  "firmware_updated": false,
+  "physical_keys_or_lcd_human_verified": false,
+  "elapsed_seconds": 117.601
+}

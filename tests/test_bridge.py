@@ -47,6 +47,22 @@ class BridgeTests(unittest.TestCase):
             device.sendto(encode_hello(6,KEY),bridge.address);self.assertEqual(bridge.pump(),0)
             self.assertEqual(bridge.generation,7)
 
+    def test_fast_four_job_events_are_coalesced_before_the_next_bounded_burst(self):
+        clock=[0.0]
+        with Bridge(KEY,bind=('127.0.0.1',0),clock=lambda:clock[0]) as bridge, socket.socket(socket.AF_INET,socket.SOCK_DGRAM) as device:
+            device.bind(('127.0.0.1',0));device.settimeout(.1)
+            for task in range(1,5):bridge.update(task,Event(State.WORK,0))
+            device.sendto(encode_hello(1,KEY),bridge.address);self.assertEqual(bridge.pump(),4)
+            for _ in range(4):device.recvfrom(64)
+            for index in range(10):
+                clock[0]=.01*(index+1)
+                for task in range(1,5):bridge.update(task,Event(State.DONE if index==9 else State.WORK,index))
+                self.assertEqual(bridge.pump(0),0)
+            clock[0]=.25;self.assertEqual(bridge.pump(0),4)
+            notices=[decode_notice(device.recvfrom(64)[0],KEY) for _ in range(4)]
+            self.assertEqual([row.task for row in notices],[1,2,3,4])
+            self.assertTrue(all(row.state==State.DONE for row in notices))
+
     def test_task_bounds_and_socket_close(self):
         bridge=Bridge(KEY,bind=('127.0.0.1',0))
         with bridge:
