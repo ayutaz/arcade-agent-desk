@@ -13,6 +13,13 @@ from arcade_agent_desk.protocol import decode_notice, encode_hello, State
 
 
 class CliTests(unittest.TestCase):
+    def test_device_commands_are_explicit_and_do_not_start_jobs(self):
+        from unittest.mock import patch
+        for action,extra in (('install',['--previous-sha','a'*64]),('connect',['--network','secrets/network.json','--peer','192.0.2.10']),('disconnect',[])):
+            with patch('arcade_agent_desk.cli.device_action',return_value={'ok':True},create=True) as device:
+                self.assertEqual(main([action,'--sdk','sdk','--port','explicit-port','--package','build/paired/app.labapp',*extra],out=io.StringIO()),0)
+                self.assertEqual(device.call_args.args[0],action)
+
     def test_watch_uses_one_bridge_for_validated_jobs_and_returns_failure_for_any_failed_job(self):
         from unittest.mock import patch
         with tempfile.TemporaryDirectory() as tmp:
@@ -23,6 +30,7 @@ class CliTests(unittest.TestCase):
                 self.assertEqual(main(['watch','--jobs',str(jobs),'--key',str(key),'--port','0','--linger','0'],out=output),1)
                 self.assertEqual(runner.call_args.args[0][0]['task'],1)
             self.assertNotIn('pass',output.getvalue())
+            self.assertEqual(json.loads(output.getvalue())['device_generation'],0)
             jobs.write_text('{"jobs":[]}')
             with patch('arcade_agent_desk.cli.Bridge') as bridge:
                 self.assertEqual(main(['watch','--jobs',str(jobs),'--key',str(key),'--linger','0'],out=io.StringIO()),2)

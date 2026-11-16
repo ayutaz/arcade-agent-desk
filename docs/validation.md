@@ -58,3 +58,12 @@ uv run --locked python -m unittest discover -s tests -p test_cli.py -q
 単体30件Green（1.254秒）、固定SDK547別worktreeで実WASM統合4件Green（1.074秒）。
 追加したwatchと250ms集約の実機連続/再接続/通知遅延はまだ確認していない。
 既存の実機通知の証拠を新CLIの実機成功へ読み替えず、FW/appを変更していない。
+
+## 明示的な接続CLIと画面素材
+
+connect/disconnect、HOME-only catalog、guest起動後UDP、有限入力/終了解放、network0600/非regular拒否を先行テストで再現して実装。遅い3.5秒beaconは1秒timeoutでRed→4秒でGreen。Mac native USBは共通SDK3bb9548の修正を固定した。
+標準42件（1.256秒）/実SDK統合6件（0.930秒）が成功。媒体はmodule欠落Red→実WASM6状態の異なるPNG/GIF・LOST・終了・既存出力拒否でGreen。公開画像は目視し、合成通知と明記した。
+keyのFIFOも別の先行subprocess deadlineでRed→O_NONBLOCK/regular検査でGreen（1件）。これはnetwork FIFOの既存対策とは別。
+実機4job/4タブ/期限/終了解放は[日常運用](daily-workflow.md)へ。ホスト結果を人の聴取やLCD確認へ拡大しない。
+
+追加後の回帰: `uv run --locked python -m unittest discover -s tests -q`は43件/1.424秒、実SDK統合は6件/1.188秒で成功。

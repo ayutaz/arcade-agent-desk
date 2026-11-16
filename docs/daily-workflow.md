@@ -1,6 +1,6 @@
 # 4作業をまとめて監視
 
-2026-11-17。ホストの複数作業CLI。今回の追加部分はまだ実機の連続試験をしていない。
+2026-11-17。複数作業CLIと、所有確認付きの本体接続。4job/期限切れ/終了を実機で自動照合した。長時間・再接続の結果は別記録。
 
 ```sh
 uv run --locked python -m arcade_agent_desk watch \
@@ -30,4 +30,39 @@ Bridgeへの書き込みは1スレッドにまとめる。頻繁なdirty更新�
 この上限は実機の欠落0/遅延の保証ではなく、連続試験で別に測定する。
 
 実機は同じ鍵でbuildしたapp、RAM Wi-FiとUDP route、明示したLAN bindが必要。
-watch単独では実機へinstall/接続しない。配備と接続の一般向けCLIは次の工程。
+watch単独では実機へinstall/接続しない。先に次の明示コマンドで接続する。
+
+## 本体の接続と終了
+
+対応OSが導入済みの本体でHOMEに戻り、全キーを離す。SSID/passwordは非公開の
+`secrets/network.json`へ保存し、`chmod 600 secrets/network.json`を適用する。
+`PORT`は検出したシリアルポート、`MAC_LAN_IP`は本体から到達できるMacのLAN IPv4。
+
+```sh
+uv run --locked python -m arcade_agent_desk install \
+  --sdk ../scratch-arcade-os --port "$PORT" --package build/paired/app.labapp
+uv run --locked python -m arcade_agent_desk connect \
+  --sdk ../scratch-arcade-os --port "$PORT" --package build/paired/app.labapp \
+  --network secrets/network.json --peer "$MAC_LAN_IP"
+uv run --locked python -m arcade_agent_desk watch \
+  --key secrets/pairing.json --jobs examples/jobs.json --bind "$MAC_LAN_IP" --linger 3
+uv run --locked python -m arcade_agent_desk disconnect \
+  --sdk ../scratch-arcade-os --port "$PORT" --package build/paired/app.labapp
+```
+
+初回だけinstallし、既存版を更新する場合は正確な旧hashを`--previous-sha`へ指定する。
+connectは選んだpackageと本体hashの一致を確認して、RAM Wi-Fi/UDP設定後に専用appを起動する。
+UDPはguest起動後、catalog照合はHOMEのみ。disconnectは所有appだけ終了し、HOME・無線/socket停止・catalogを確認する。
+FW・共有設定・他appを書き換えない。Wi-Fiエラーや所有不明時は操作を繰り返さず確認する。
+
+## 新CLIの実機結果
+
+4本の実プロセスでexit0/7/124/0を取得し、4タブの描画命令CRCが同一WASMの参照と一致。
+送信停止後のLOST、HOME復帰、radio停止、15appの全版/hash保持も確認した。
+[匿名結果](device/daily-v1.json)。LCD・物理キー・音の聴取を確認済みとは扱わない。
+初回の追加試験は管理sessionを無通信で放置したためstatus6となり失敗。観測中も状態を照会して再実行した。失敗を成功記録で上書きしていない。
+
+## 画面素材
+
+[実WASMのGIF](media/replay.gif)と6状態のPNGは、公開demo専用鍵と合成通知で作成した。
+本体撮影・実ジョブの録画ではない。`uv run --locked python -m arcade_agent_desk.media --sdk <SDK> --output <new-directory>`で再生成できる。production鍵やpaired binaryは公開しない。

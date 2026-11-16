@@ -2,9 +2,12 @@
 name = "arcade-agent-desk"
 version = "0.1.0"
 requires-python = ">=3.12.13,<3.13"
-dependencies = []
+dependencies = [
+    "pyserial==3.5",
+]
 
 [dependency-groups]
 dev = [
+    "pillow==13.0.0",
     "wasmtime==50.0.1",
 ]

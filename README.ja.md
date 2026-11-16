@@ -6,6 +6,10 @@ WORK・DONE・FAIL・WAIT・LOSTの表示と短い通知音を使います。
 
 [English](README.md)
 
+![Status replay](docs/media/replay.gif)
+
+*実WASMへ合成通知を渡した再生画像です。本体撮影・実ジョブの録画ではありません。*
+
 ## 現在の状態
 
 UDP bridge、実コマンドrunner、非公開鍵の生成、鍵ごとのWASMビルドまで実装しました。
@@ -25,7 +29,7 @@ uv run --locked python -m arcade_agent_desk run --key secrets/pairing.json \
 ```
 
 buildには変更のないOS checkout
-`547e7ac7e1af8eedf1dc063f97a27a93425f50b7`と固定Zigが必要です。
+`3bb9548846505eac303927b9064c6a8d0eb44f79`と固定Zigが必要です。
 OS側で`uv run --locked python tools/bootstrap.py`を実行して用意します。
 成果物にも秘密鍵が含まれるため、鍵・build出力はローカルに保管します。
 標準の待受はloopback。本体接続にはLANアドレスの明示指定とOSのUDP経路設定が必要です。

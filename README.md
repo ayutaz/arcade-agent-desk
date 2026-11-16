@@ -6,6 +6,10 @@ The computer sends status numbers, never command text, source code or full logs.
 
 [日本語](README.ja.md)
 
+![Status replay](docs/media/replay.gif)
+
+*Actual WASM replay with synthetic notices; not a handheld recording or real job video.*
+
 ## Current status
 
 The UDP bridge, local command runner, private pairing and paired WASM build work
@@ -26,7 +30,7 @@ uv run --locked python -m arcade_agent_desk run --key secrets/pairing.json \
 ```
 
 Builds require a clean OS checkout at
-`547e7ac7e1af8eedf1dc063f97a27a93425f50b7` and its pinned Zig toolchain
+`3bb9548846505eac303927b9064c6a8d0eb44f79` and its pinned Zig toolchain
 (`uv run --locked python tools/bootstrap.py` in that checkout).
 Build output embeds your private pairing key: keep both the output and the key local.
 The default bridge listens only on loopback. A real device needs an explicit LAN

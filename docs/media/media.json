@@ -1,0 +1,14 @@
+{
+  "source": "actual WASM with synthetic notices",
+  "device_capture": false,
+  "real_jobs": false,
+  "states": [
+    "WORK",
+    "DONE",
+    "FAIL",
+    "WAIT",
+    "CANCEL",
+    "LOST"
+  ],
+  "package_sha256": "01828ce786e3911e39832cf551d5609c3e2b48c121eff70e838060d7155c3848"
+}
