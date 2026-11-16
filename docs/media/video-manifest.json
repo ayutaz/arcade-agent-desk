@@ -1,0 +1,74 @@
+{
+  "project": "arcade-agent-desk",
+  "source": "actual WASM replay GIFs, edited timing",
+  "device_capture": false,
+  "real_time_video": false,
+  "notices": "synthetic",
+  "audio": "synthetic editing soundtrack, not device audio",
+  "width": 1080,
+  "height": 1350,
+  "fps": 30,
+  "duration_seconds": 22,
+  "chapters": [
+    {
+      "id": "scene-0",
+      "start": 0,
+      "end": 3,
+      "tag": "arcade-agent-desk",
+      "title": [
+        "PCの作業が終わると、",
+        "手元の画面でわかる。"
+      ],
+      "caption": "小さなゲーム機を、作業の通知端末に。"
+    },
+    {
+      "id": "scene-1",
+      "start": 3,
+      "end": 8,
+      "tag": "arcade-agent-desk",
+      "title": [
+        "成功も、失敗も。",
+        "4つの作業を監視。"
+      ],
+      "caption": "実際の終了コードから状態を送信。"
+    },
+    {
+      "id": "scene-2",
+      "start": 8,
+      "end": 12,
+      "tag": "arcade-agent-desk",
+      "title": [
+        "古い通知は拒否。",
+        "通信が止まればLOST。"
+      ],
+      "caption": "映像には合成した通知を使用。"
+    },
+    {
+      "id": "scene-3",
+      "start": 12,
+      "end": 17,
+      "tag": "arcade-agent-desk",
+      "title": [
+        "40更新と2再接続。",
+        "実機で自動照合。"
+      ],
+      "caption": "画面・音は編集。実機撮影ではありません。"
+    },
+    {
+      "id": "oss",
+      "start": 17,
+      "end": 22,
+      "tag": "OPEN SOURCE / Apache-2.0",
+      "title": [
+        "作業の通知端末を、",
+        "OSSで公開。"
+      ],
+      "caption": "arcade-agent-desk"
+    }
+  ],
+  "renderer_sha256": "78c19ea3d4e4fea4e5c1470f10d3c65af66bc20c8caf0054b8ea1b4872383960",
+  "source_sha256": {
+    "desk": "8c4f834112d93af51c6e4715a65a094445b4e9d713b4701e01c2827cff4b171d"
+  },
+  "video_sha256": "e2c92765ea97fd922f022383524f6435367f20c1aa829afe076a78bed11536e4"
+}

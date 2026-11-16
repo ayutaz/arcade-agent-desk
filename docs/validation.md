@@ -73,3 +73,7 @@ keyのFIFOも別の先行subprocess deadlineでRed→O_NONBLOCK/regular検査で
 PR #2の7da6a5fをGitHubから新規cloneし、空のuv環境で`uv sync --locked`、pair、buildを実行。新しい非公開鍵のpackageは3,559B。鍵でcodeの最適化結果が変わるため、全pairingが3,555Bとは扱わない。
 本体と同じ既存鍵で別途再buildした場合は3,555B/SHA43a14940…と完全一致した。
 新cloneでexamples/jobs.jsonのwatchを実行し、exit0/0/7/124、全体exit1、実機未接続を照合。これはローカル実プロセス試験で、本体への二重配備はしていない。
+
+## 短い公開デモ
+
+公開GIFを既存の動画editorで4:5/22秒へ編集。ffprobeで1080×1350、30fps、H.264/yuv420p、AAC、22秒を確認。各章の画像を目視した。manifestに入力/renderer/出力hashと章構成を保存。ホスト再生・編集音を映像とREADMEで明記し、実機撮影/実時間性能/実ジョブの録画とは扱わない。新しいrendererの実装や実機操作ではない。
