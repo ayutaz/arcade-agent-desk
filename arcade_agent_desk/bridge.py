@@ -43,7 +43,7 @@ class Bridge:
             self.peer=source;self.last_hello=self.clock();accepted=True
             if generation!=self.generation:self.generation=generation;self.sequence=0
         count=0
-        if self.peer is not None and (accepted or self.dirty or self.clock()-self.last_send>=.5):
+        if self.peer is not None and (accepted or (self.dirty and self.clock()-self.last_send>=.25) or self.clock()-self.last_send>=.5):
             for task,notice in sorted(self.rows.items()):
                 self.sequence=self.sequence%0xffffffff+1
                 from dataclasses import replace

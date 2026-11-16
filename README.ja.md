@@ -31,6 +31,17 @@ OS側で`uv run --locked python tools/bootstrap.py`を実行して用意しま�
 標準の待受はloopback。本体接続にはLANアドレスの明示指定とOSのUDP経路設定が必要です。
 runだけではアプリの配備や本体接続は行いません。
 
+## 4作業の監視
+
+```sh
+uv run --locked python -m arcade_agent_desk watch \
+  --key secrets/pairing.json --jobs examples/jobs.json
+```
+
+1つのbridgeで最大4つの明示コマンドを監視します。サンプルには意図した失敗/期限切れを含むため、
+終了コードは1です。実作業用の設定はGit対象外へコピーします。
+[形式と範囲](docs/daily-workflow.md)。コマンドや出力の本文は本体へ送信しません。
+
 ## テスト
 
 [uv](https://docs.astral.sh/uv/)とClangを用意して実行します。

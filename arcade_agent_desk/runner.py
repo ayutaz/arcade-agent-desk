@@ -14,13 +14,15 @@ class Event:
     elapsed_ms: int
 
 
-def run_command(argv,*,on_event,timeout=3600,heartbeat=.5):
+def run_command(argv,*,on_event,timeout=3600,heartbeat=.5,cancel=None):
     if (type(argv) is not list or not argv or any(type(arg) is not str or not arg or '\0' in arg for arg in argv)
         or type(timeout) not in (int,float) or not math.isfinite(timeout) or not 0<timeout<=86400
         or not .01<=heartbeat<=5):
         raise ValueError('command/timeout bounds')
+    if cancel is not None and not callable(getattr(cancel,'is_set',None)):raise ValueError('cancellation event')
     started=time.monotonic()
     def emit(state):on_event(Event(state,int((time.monotonic()-started)*1000)))
+    if cancel is not None and cancel.is_set():emit(State.CANCEL);return 130
     emit(State.WORK)
     try: process=subprocess.Popen(argv,start_new_session=True)
     except OSError:
@@ -36,6 +38,8 @@ def run_command(argv,*,on_event,timeout=3600,heartbeat=.5):
                 process.wait(timeout=1)
     try:
         while True:
+            if cancel is not None and cancel.is_set():
+                terminate();emit(State.CANCEL);return 130
             left=timeout-(time.monotonic()-started)
             if left<=0:
                 terminate();emit(State.FAIL);return 124

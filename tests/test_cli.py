@@ -13,6 +13,21 @@ from arcade_agent_desk.protocol import decode_notice, encode_hello, State
 
 
 class CliTests(unittest.TestCase):
+    def test_watch_uses_one_bridge_for_validated_jobs_and_returns_failure_for_any_failed_job(self):
+        from unittest.mock import patch
+        with tempfile.TemporaryDirectory() as tmp:
+            key=Path(tmp)/'pair.json';main(['pair','--key',str(key)],out=io.StringIO())
+            jobs=Path(tmp)/'jobs.json';jobs.write_text(json.dumps(dict(jobs=[dict(task=1,command=[sys.executable,'-c','pass'],timeout=2)])))
+            output=io.StringIO()
+            with patch('arcade_agent_desk.cli.run_jobs',return_value={1:0,2:7},create=True) as runner:
+                self.assertEqual(main(['watch','--jobs',str(jobs),'--key',str(key),'--port','0','--linger','0'],out=output),1)
+                self.assertEqual(runner.call_args.args[0][0]['task'],1)
+            self.assertNotIn('pass',output.getvalue())
+            jobs.write_text('{"jobs":[]}')
+            with patch('arcade_agent_desk.cli.Bridge') as bridge:
+                self.assertEqual(main(['watch','--jobs',str(jobs),'--key',str(key),'--linger','0'],out=io.StringIO()),2)
+                bridge.assert_not_called()
+
     def test_pairing_does_not_print_key_and_refuses_overwrite(self):
         with tempfile.TemporaryDirectory() as tmp:
             key=Path(tmp)/'pair.json';output=io.StringIO()

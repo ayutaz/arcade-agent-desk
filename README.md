@@ -33,6 +33,18 @@ The default bridge listens only on loopback. A real device needs an explicit LAN
 bind address and the OS's configured UDP route; running a command alone does not
 install or connect the device.
 
+## Watch four jobs
+
+```sh
+uv run --locked python -m arcade_agent_desk watch \
+  --key secrets/pairing.json --jobs examples/jobs.json
+```
+
+One bridge handles up to four explicit commands. The sample includes intentional
+failure and timeout cases, so its exit status is 1. Copy it to a local, ignored
+job file for real work. [Job format and boundaries](docs/daily-workflow.md).
+No command or output text is sent to the handheld.
+
 ## Run the tests
 
 Install [uv](https://docs.astral.sh/uv/) and Clang, then:
