@@ -10,7 +10,9 @@ The computer sends status numbers, never command text, source code or full logs.
 
 The UDP bridge, local command runner, private pairing and paired WASM build work
 on the host. Tests cover the real C app and Wasmtime, including authentication,
-replay rejection and expiry. **This is not a device-tested release yet.**
+replay rejection and expiry. One ESP32-S3 handheld has also passed automated
+status/render comparisons, real exit-code notifications, expiry and cleanup.
+Human display/audio checks and a complete installation command are still pending.
 
 ## Try the host tools
 
@@ -62,4 +64,5 @@ ABI 2 SDK. Production pairing keys stay local and must not be committed.
 The public test key is only a fixture, not a deployable pairing credential.
 
 Development details: [host validation](docs/validation.md),
-[protocol](docs/protocol.md). Code is licensed under [Apache-2.0](LICENSE).
+[device validation](docs/device-validation.md), [protocol](docs/protocol.md).
+Code is licensed under [Apache-2.0](LICENSE).
