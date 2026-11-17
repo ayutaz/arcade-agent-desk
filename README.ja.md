@@ -86,3 +86,5 @@ WAITはlibraryから明示的に送るイベントで、AIの確認待ちを推�
 
 [ホスト検証](docs/validation.md)・[実機検証](docs/device-validation.md)・[通信仕様](docs/protocol.md)に詳細を記録します。
 コードのライセンスは[Apache-2.0](LICENSE)です。
+
+配布手順は[ソースリリース](docs/releases.md)へ。正式タグ/Releaseはまだ公開していません。

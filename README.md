@@ -93,3 +93,5 @@ The public test key is only a fixture, not a deployable pairing credential.
 Development details: [host validation](docs/validation.md),
 [device validation](docs/device-validation.md), [protocol](docs/protocol.md).
 Code is licensed under [Apache-2.0](LICENSE).
+
+Release packaging: [source archive and checksum](docs/releases.md). No tagged release has been published yet.

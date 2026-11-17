@@ -10,3 +10,4 @@ build/
 reports/
 app/desk_key.h
 .DS_Store
+dist/
