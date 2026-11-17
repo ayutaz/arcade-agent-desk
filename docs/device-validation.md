@@ -34,3 +34,10 @@ FWは更新せず、専用`agent-desk`だけを追加。ペアリング鍵と鍵
 
 上の7手順は最初の検証経路。後続で同じ安全境界の明示CLIを実装・実機検証した。
 生のsession/機器情報・資格情報・paired binaryはGit対象外に保持する。
+
+## 音声FW追加後の互換性
+
+2026-11-17 JST。個別許可後の音声FW1affc424…とAI Petを含む16本の環境でも、通常SoC reset後の再接続を確認した。
+実CLI jobのexit0/DONE描画命令CRC、起動generationの保持、終了/HOME、radio/socket停止、音声解放、全16本の版/hash不変に成功した。
+appのコード/paired packageは変更していない。実LCD/物理キー/通知音の聴取や、電池の電源断は未確認。
+旧40更新の遅延値を、新FWで再測定したとは扱わない。
