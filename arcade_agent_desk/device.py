@@ -64,11 +64,14 @@ def link_owned(client,ssid,password,peer,peer_port,*,app_sha,clock=time.monotoni
         client.network_route(str(ip),peer_port,local_port=0)
         target=next(i for i,row in enumerate(rows) if row['id']=='agent-desk')
         for _ in range(17):
-            _same(client,rows);status=client.control_status()
+            status=client.control_status()
             if not _home(status):raise RuntimeError('HOME ownership changed')
             if status['selected']==target:break
             _pulse(client,4,clock,sleep)
         else:raise RuntimeError('selection did not converge')
+        _same(client,rows)
+        status=client.control_status()
+        if not _home(status) or status['selected']!=target:raise RuntimeError('HOME selection changed before launch')
         status=_pulse(client,16,clock,sleep)
         if status['mode']!=1 or status['active_id']!='agent-desk':raise RuntimeError('owned app did not launch')
         launched=True

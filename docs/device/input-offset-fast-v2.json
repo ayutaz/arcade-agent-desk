@@ -1,0 +1,18 @@
+{
+  "after_verified_soc_reset": true,
+  "real_exit_code": 0,
+  "done_crc_matches_wasm": true,
+  "launch_generation_survived_reset": true,
+  "home": true,
+  "radio_stopped": true,
+  "preserved_apps": 16,
+  "audio_released": true,
+  "firmware_updated": false,
+  "battery_power_cycle": false,
+  "physical_keys_display_or_audio_verified": false,
+  "connect_ms": 51625.286,
+  "connect_catalog_reads": 2,
+  "connect_down_pulses": 15,
+  "connect_boot_unchanged": true,
+  "host_device_module_sha256": "e00cd75b7f3eed5c7b36738a95cceb7750b84fed8a0fcd1b072365254fce078c"
+}

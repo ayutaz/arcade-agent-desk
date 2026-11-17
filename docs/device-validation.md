@@ -41,3 +41,11 @@ FWは更新せず、専用`agent-desk`だけを追加。ペアリング鍵と鍵
 実CLI jobのexit0/DONE描画命令CRC、起動generationの保持、終了/HOME、radio/socket停止、音声解放、全16本の版/hash不変に成功した。
 appのコード/paired packageは変更していない。実LCD/物理キー/通知音の聴取や、電池の電源断は未確認。
 旧40更新の遅延値を、新FWで再測定したとは扱わない。
+
+## 入力補正版c032と接続照合の整理
+
+2026-11-18 JST。c032/16appでも、通常reset後の実通知/終了を確認した。
+後続でPC側のメニュー照合を開始/起動直前の2回へまとめ、15回のDOWNが必要な条件でも、
+実job exit0/DONE CRC、世代保持、HOME/無線停止/音声解放/16本の版/hash不変を確認。
+[計測結果](device/input-offset-fast-v2.json)の接続時間は51,625.286msで、旧版との同条件速度比較ではない。
+paired package/FWはこの変更で更新していない。[先行Red/Greenと初回fixture失敗](validation.md#2026-11-18-接続時のカタログ照合回数)。
