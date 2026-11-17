@@ -93,3 +93,35 @@ class DeviceTests(unittest.TestCase):
             return dict(client.s)
         client.input_pulse=pulse;client.control_status=status
         self.assertTrue(unlink_owned(client,app_sha=SHA)['home'])
+
+    def test_full_catalog_selection_reads_hashes_only_at_entry_and_before_launch(self):
+        for target in (0,1,15):
+            with self.subTest(target=target):
+                client=Device();rows=[dict(id=f'old-{i}',title='Old',version='1.0.0',sha256='b'*64) for i in range(16)]
+                rows[target]=dict(id='agent-desk',title='Agent Desk',version='1.0.0',sha256=SHA);client.rows=rows
+                reads=[0];original=client.list_apps
+                def catalog():reads[0]+=1;return original()
+                client.list_apps=catalog
+                result=link_owned(client,'example-ssid','example-password','192.0.2.10',50123,app_sha=SHA)
+                self.assertTrue(result['connected']);self.assertEqual(reads[0],2)
+                self.assertEqual(client.pulses,[4]*target+[16]);self.assertEqual(client.rows,rows)
+
+    def test_catalog_change_during_selection_is_refused_before_start(self):
+        client=Device();original=client.input_pulse
+        def pulse(held,**kwargs):
+            out=original(held,**kwargs)
+            if held==4:client.rows[0]['sha256']='c'*64
+            return out
+        client.input_pulse=pulse
+        with self.assertRaises(RuntimeError):link_owned(client,'example-ssid','example-password','192.0.2.10',50123,app_sha=SHA)
+        self.assertNotIn(16,client.pulses);self.assertEqual(client.s['mode'],0)
+
+    def test_selection_change_during_final_catalog_check_never_launches_other_app(self):
+        client=Device();client.s['selected']=1;original=client.list_apps;reads=[0]
+        def catalog():
+            reads[0]+=1;out=original()
+            if reads[0]==2:client.s['selected']=0
+            return out
+        client.list_apps=catalog
+        with self.assertRaises(RuntimeError):link_owned(client,'example-ssid','example-password','192.0.2.10',50123,app_sha=SHA)
+        self.assertNotIn(16,client.pulses);self.assertEqual(client.s['mode'],0)
