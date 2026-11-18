@@ -43,6 +43,10 @@ install or connect the device.
 
 ## Watch four jobs
 
+An unreachable notification receiver does not cancel local jobs. Authentication and reconnection rules still apply.
+`device_connected` records a received HELLO; it does not guarantee delivery of the last notification.
+[Offline behavior](docs/offline-notifications.md).
+
 ```sh
 uv run --locked python -m arcade_agent_desk watch \
   --key secrets/pairing.json --jobs examples/jobs.json
