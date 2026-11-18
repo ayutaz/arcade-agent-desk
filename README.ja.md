@@ -40,6 +40,10 @@ runだけではアプリの配備や本体接続は行いません。
 
 ## 4作業の監視
 
+通知先への到達不能を検出しても、Macの作業は継続します。認証・再接続の条件は維持します。
+`device_connected`はHELLOの受信歴で、最後の通知の到達保証ではありません。
+[切断時の動作](docs/offline-notifications.md)。
+
 ```sh
 uv run --locked python -m arcade_agent_desk watch \
   --key secrets/pairing.json --jobs examples/jobs.json

@@ -1,9 +1,13 @@
 """A single-writer UDP bridge. No command/output text crosses this boundary."""
 import ipaddress
+import errno
 import math
 import socket
 import time
 from .protocol import Notice, State, decode_hello, encode_hello, encode_notice
+
+OFFLINE_ERRORS = frozenset(getattr(errno, name) for name in
+    ('EHOSTUNREACH', 'ENETUNREACH', 'EHOSTDOWN', 'ENETDOWN', 'ECONNREFUSED') if hasattr(errno, name))
 
 
 class Bridge:
@@ -35,6 +39,9 @@ class Bridge:
         for _ in range(32):
             try:packet,source=self.socket.recvfrom(65)
             except (socket.timeout,BlockingIOError):break
+            except OSError as error:
+                if error.errno not in OFFLINE_ERRORS:raise
+                break
             try:generation=decode_hello(packet,self.key)
             except ValueError:continue
             if (self.peer is not None and source!=self.peer and
@@ -48,6 +55,10 @@ class Bridge:
                 self.sequence=self.sequence%0xffffffff+1
                 from dataclasses import replace
                 packet=encode_notice(replace(notice,generation=self.generation,sequence=self.sequence),self.key)
-                self.socket.sendto(packet,self.peer);count+=1
+                try:self.socket.sendto(packet,self.peer)
+                except OSError as error:
+                    if error.errno not in OFFLINE_ERRORS:raise
+                    break
+                count+=1
             self.last_send=self.clock();self.dirty=False
         return count
