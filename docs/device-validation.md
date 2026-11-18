@@ -49,3 +49,9 @@ appのコード/paired packageは変更していない。実LCD/物理キー/通
 実job exit0/DONE CRC、世代保持、HOME/無線停止/音声解放/16本の版/hash不変を確認。
 [計測結果](device/input-offset-fast-v2.json)の接続時間は51,625.286msで、旧版との同条件速度比較ではない。
 paired package/FWはこの変更で更新していない。[先行Red/Greenと初回fixture失敗](validation.md#2026-11-18-接続時のカタログ照合回数)。
+
+## 音声v3版での限定互換性
+
+2026-11-18。別途レビュー/個別許可したe5915861…の通常SoC reset後も、実CLIのexit0/DONE描画CRCと起動generation保持、終了/HOME・無線停止/音声解放・全16本の版/hash不変を確認した。[匿名結果](device/voice-v3-compatibility-v1.json)。接続は2回のcatalog照合/15 DOWNを含む51,853.596ms。旧版との同条件速度比較ではない。
+
+この試験でapp/paired package/FWを変更していない。以前の40更新の遅延や他状態を再測定した結果ではなく、実LCD/物理キー/聴取・電池の電源断/実機撮影も未確認。資格情報は既存の非公開設定からRAMのみで使い、公開しない。
