@@ -19,8 +19,8 @@ on the host. Tests cover the real C app and Wasmtime, including authentication,
 replay rejection and expiry. One ESP32-S3 handheld has also passed automated
 status/render comparisons, real exit-code notifications, expiry and cleanup.
 The install/connect/disconnect CLI is available. Two reconnect cycles preserved all
-15 apps; 40 timed updates met the three-second observation deadline. Human
-LCD, physical key and audio checks remain pending.
+15 apps; 40 timed updates met the three-second observation deadline. On 2026-11-19, the owner confirmed
+the display, physical tab switching and notification sound.
 
 ## Try the host tools
 
